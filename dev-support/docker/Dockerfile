@@ -73,7 +73,11 @@ RUN apt-get -q update && apt-get -q install -y \
     snappy \
     sudo \
     zlib1g-dev
-
+#GLADYSHEV
+####
+RUN python -m pip install --upgrade pip==20.3.4
+####
+# Ins
 #######
 # OpenJDK 8
 #######
@@ -158,7 +162,6 @@ RUN apt-get -q update && apt-get -q install -y bats
 RUN pip2 install \
     configparser==4.0.2 \
     pylint==1.9.2
-
 ####
 # Install dateutil.parser
 ####
@@ -167,13 +170,17 @@ RUN pip2 install python-dateutil
 ###
 # Install node.js for web UI framework (4.2.6 ships with Xenial)
 ###
-RUN apt-get -y install nodejs && \
-    ln -s /usr/bin/nodejs /usr/bin/node && \
-    apt-get -y install npm && \
-    npm install npm@latest -g && \
-    npm install -g bower && \
+#RUN apt-get -y install nodejs && \
+RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash - && \
+    apt-get install -y nodejs
+RUN node -v && npm -v
+#    ln -s /usr/bin/nodejs /usr/bin/node && \
+#RUN apt-get -y install npm
+#
+#RUN npm -g install npm@latest
+#RUN npm install npm@latest -g && \
+RUN npm install -g bower && \
     npm install -g ember-cli
-
 ###
 # Avoid out of memory errors in builds
 ###

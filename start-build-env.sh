@@ -19,7 +19,7 @@ set -e               # exit on error
 
 cd "$(dirname "$0")" # connect to root
 
-docker build -t hadoop-build dev-support/docker
+docker build -t hadoop-build dev-support/docker --no-cache
 
 if [ "$(uname -s)" = "Linux" ]; then
   USER_NAME=${SUDO_USER:=$USER}
@@ -59,7 +59,7 @@ fi
 
 docker build -t "hadoop-build-${USER_ID}" - <<UserSpecificDocker
 FROM hadoop-build
-RUN groupadd --non-unique -g ${GROUP_ID} ${USER_NAME}
+#RUN groupadd --non-unique -g ${GROUP_ID} ${USER_NAME}
 RUN useradd -g ${GROUP_ID} -u ${USER_ID} -k /root -m ${USER_NAME}
 RUN echo "${USER_NAME} ALL=NOPASSWD: ALL" > "/etc/sudoers.d/hadoop-build-${USER_ID}"
 ENV HOME /home/${USER_NAME}
